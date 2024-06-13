@@ -25,4 +25,7 @@ for i in range(20):
             calculateNewAverageIncrementally(averageRewards[i - 1], randomLever(), i + 1)
         )
 
-print(averageRewards)
+plt.plot(averageRewards)
+plt.ylabel("Average rewards")
+plt.xlabel("Step")
+plt.show()
