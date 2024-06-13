@@ -9,16 +9,16 @@ def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
 
 averageRewards = []
 levers = [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
 ]
 
 def randomLever():
@@ -31,6 +31,8 @@ for i in range(99999):
         averageRewards.append(
             calculateNewAverageIncrementally(averageRewards[i - 1], randomLever(), i + 1)
         )
+    for lever,reward in enumerate(levers):
+        levers[lever] += np.random.normal(0, 0.01)
 
 plt.plot(averageRewards)
 plt.ylabel("Average rewards")
