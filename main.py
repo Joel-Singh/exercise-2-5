@@ -1,3 +1,4 @@
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -6,18 +7,27 @@ import random
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
     return oldAverage + (1/numberOfValues) * (nextValue - oldAverage)
 
+def createLever(reward):
+    return lambda: reward
+
 averageRewards = []
-
-def firstLever():
-    return 1.0
-
-def secondLever():
-    return 0.0
+levers = [
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(0),
+    createLever(1),
+]
 
 def randomLever():
-    return firstLever() if random.random() >= 0.5 else secondLever()
+    return levers[math.floor(random.random() * 10)]()
 
-for i in range(20):
+for i in range(99999):
     if (i == 0):
         averageRewards.append(randomLever())
     else:
