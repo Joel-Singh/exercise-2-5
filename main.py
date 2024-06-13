@@ -7,25 +7,22 @@ import random
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
     return oldAverage + (1/numberOfValues) * (nextValue - oldAverage)
 
-def createLever(reward):
-    return lambda: reward
-
 averageRewards = []
 levers = [
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(0),
-    createLever(1),
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
 ]
 
 def randomLever():
-    return levers[math.floor(random.random() * 10)]()
+    return levers[math.floor(random.random() * 10)]
 
 for i in range(99999):
     if (i == 0):
