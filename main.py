@@ -25,7 +25,7 @@ def randomLever():
     lever = math.floor(random.random() * 10)
     leverReward = levers[lever]
     return {
-        "lever": lever,
+        "leverIndex": lever,
         "leverReward": leverReward
     }
 
