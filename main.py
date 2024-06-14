@@ -22,14 +22,19 @@ levers = [
 ]
 
 def randomLever():
-    return levers[math.floor(random.random() * 10)]
+    lever = math.floor(random.random() * 10)
+    leverReward = levers[lever]
+    return {
+        "lever": lever,
+        "leverReward": leverReward
+    }
 
 for i in range(99999):
     if (i == 0):
-        averageRewards.append(randomLever())
+        averageRewards.append(randomLever()["leverReward"])
     else:
         averageRewards.append(
-            calculateNewAverageIncrementally(averageRewards[i - 1], randomLever(), i + 1)
+            calculateNewAverageIncrementally(averageRewards[i - 1], randomLever()["leverReward"], i + 1)
         )
     for lever,reward in enumerate(levers):
         levers[lever] += np.random.normal(0, 0.01)
