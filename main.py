@@ -33,10 +33,37 @@ def randomLever():
         "leverReward": leverReward
     }
 
+def chooseLeverGreedily():
+    def getHighestIndices(list: list[float | None]):
+        highestNumber = 0
+        highestIndices = []
+        for i,v in enumerate(list):
+            if v is None:
+                v = 0
+            if (v > highestNumber):
+                highestIndices = []
+                highestNumber = v
+                highestIndices.append(i)
+            elif(v == highestNumber):
+                highestIndices.append(i)
+        return highestIndices
+
+    highestIndices = getHighestIndices(rewardEstimates)
+    randomlyChosenIndex = highestIndices[math.floor(len(highestIndices) * random.random())]
+    leverReward = levers[randomlyChosenIndex]
+    return {
+        "leverIndex": randomlyChosenIndex,
+        "leverReward": leverReward
+    }
+
+leversChosen = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 for i in range(99999):
-    lever = randomLever()
-    leverIndex = lever["leverIndex"]
-    leverReward = lever["leverReward"]
+    lever = chooseLeverGreedily()
+    leverIndex: int = lever["leverIndex"]
+    leverReward: float = lever["leverReward"]
+
+    leversChosen[leverIndex] += 1
+
     if (rewardEstimates[leverIndex] is None):
         rewardEstimates[leverIndex] = leverReward
     else:
@@ -54,5 +81,12 @@ for i in range(99999):
 plt.plot(averageRewards)
 plt.ylabel("Average rewards")
 plt.xlabel("Step")
+print("Levers chosen are")
+print(leversChosen)
+print()
+print("Estimates are")
 print(rewardEstimates)
+print()
+print("Actual levers are")
+print(levers)
 plt.show()
