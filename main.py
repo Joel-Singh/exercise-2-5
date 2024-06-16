@@ -74,6 +74,7 @@ for i in range(NUMBER_OF_ITERATIONS):
     tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10) - 1
     if ((i % tenPercent) == 0):
         print(str((i / tenPercent) * 10) + "% complete")
+
     lever = None
     if (random.random() < CHANCE_TO_SELECT_RANDOMLY):
         lever = chooseLeverRandomly()
