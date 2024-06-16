@@ -7,10 +7,10 @@ import random
 from numpy.lib import math
 
 DEFAULT_ESTIMATE: Final = 0
-CHANCE_TO_SELECT_RANDOMLY = 0.1
-ARE_LEVERS_WALKING = True
+CHANCE_TO_SELECT_RANDOMLY: Final = 0.1
+ARE_LEVERS_WALKING: Final = True
 
-NUMBER_OF_ITERATIONS = 10000
+NUMBER_OF_ITERATIONS: Final = 10000
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
