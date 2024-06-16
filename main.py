@@ -56,6 +56,14 @@ levers = [
     createLever(),
 ]
 
+def getOptimalLever(levers: list[Lever]):
+    optimalLever = levers[0]
+    for lever in levers:
+        if (optimalLever["getTrueValue"]() < lever["getTrueValue"]()):
+            optimalLever = lever
+    return optimalLever
+
+optimalLever = getOptimalLever(levers)
 
 def chooseLeverRandomly():
     return random.choice(levers)
@@ -77,6 +85,7 @@ def chooseLeverGreedily():
     highestEstimateLevers = getHighestEstimateLevers(levers)
     return random.choice(highestEstimateLevers)
 
+timesOptimalLeverIsChosen = 0
 for i in range(NUMBER_OF_ITERATIONS):
     tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10) - 1
     if ((i % tenPercent) == 0):
@@ -89,6 +98,9 @@ for i in range(NUMBER_OF_ITERATIONS):
         lever = chooseLeverGreedily()
 
     reward = lever['getReward']()
+
+    if (lever is optimalLever):
+        timesOptimalLeverIsChosen += 1
 
     if (lever['estimate'] is None):
         lever['estimate'] = reward
@@ -109,6 +121,7 @@ for i in range(NUMBER_OF_ITERATIONS):
             lever["takeRandomWalk"]()
 
 print()
+
 print("Estimates are")
 def getRewardEstimates() -> list[float]:
     rewardEstimates = []
@@ -116,6 +129,7 @@ def getRewardEstimates() -> list[float]:
         rewardEstimates.append(lever["estimate"])
     return rewardEstimates
 print(getRewardEstimates())
+
 print()
 
 print("Actual levers are")
@@ -125,6 +139,13 @@ def getLeversTrueValues() -> list[float]:
         trueValues.append(lever["getTrueValue"]())
     return trueValues
 print(getLeversTrueValues())
+
+print()
+
+print("% Optimal lever was chosen")
+print(str((timesOptimalLeverIsChosen / NUMBER_OF_ITERATIONS) * 100) + "%")
+
+print()
 
 plt.plot(averageRewards)
 plt.ylabel("Average rewards")
