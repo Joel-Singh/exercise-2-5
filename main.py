@@ -9,16 +9,16 @@ def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
 
 averageRewards = []
 levers = [
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    1.0,
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
+    np.random.normal(0, 1),
 ]
 
 rewardEstimates: list[None | float] = [
