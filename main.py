@@ -7,6 +7,7 @@ import random
 
 DEFAULT_ESTIMATE: Final = 0
 CHANCE_TO_SELECT_RANDOMLY = 0.1
+ARE_LEVERS_WALKING = True
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
@@ -86,8 +87,9 @@ for i in range(999999):
         averageRewards.append(
             calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
         )
-    for _,lever in enumerate(levers):
-        lever["takeRandomWalk"]()
+    if (ARE_LEVERS_WALKING):
+        for _,lever in enumerate(levers):
+            lever["takeRandomWalk"]()
 
 print()
 print("Estimates are")
