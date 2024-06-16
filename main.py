@@ -19,9 +19,9 @@ STEP_SIZE_PARAMETER = 0.1
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
     return oldAverage + (1/numberOfValues) * (nextValue - oldAverage)
 
-
 def calculateNewAverageWithStepSizeParameter(oldAverage, nextValue, stepSizeParameter):
     return oldAverage + (stepSizeParameter) * (nextValue - oldAverage)
+
 
 class Lever(TypedDict):
     estimate: None | float
@@ -41,6 +41,7 @@ def createLever() -> Lever:
         "takeRandomWalk": takeRandomWalk,
         "getTrueValue": lambda: trueValue
     }
+
 
 def getOptimalLever(levers: list[Lever]):
     optimalLever = levers[0]
