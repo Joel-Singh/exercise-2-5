@@ -44,13 +44,6 @@ levers = [
     createLever(),
 ]
 
-def randomLever():
-    lever = math.floor(random.random() * 10)
-    leverReward = levers[lever]
-    return {
-        "leverIndex": lever,
-        "leverReward": leverReward
-    }
 def chooseLeverGreedily():
     def getHighestEstimateLevers(list: list[Lever]) -> list[Lever]:
         highestEstimate = 0
