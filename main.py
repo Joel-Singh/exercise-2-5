@@ -12,9 +12,16 @@ ARE_LEVERS_WALKING: Final = True
 
 NUMBER_OF_ITERATIONS: Final = 10000
 
+USE_INCREMENTAL_ESTIMATE_CALCULATION = False
+STEP_SIZE_PARAMETER = 0.1
+
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
     return oldAverage + (1/numberOfValues) * (nextValue - oldAverage)
+
+
+def calculateNewAverageWithStepSizeParameter(oldAverage, nextValue, stepSizeParameter):
+    return oldAverage + (stepSizeParameter) * (nextValue - oldAverage)
 
 class Lever(TypedDict):
     estimate: None | float
@@ -86,7 +93,10 @@ for i in range(NUMBER_OF_ITERATIONS):
     if (lever['estimate'] is None):
         lever['estimate'] = reward
     else:
-        lever['estimate'] = calculateNewAverageIncrementally(lever['estimate'], reward, i + 1)
+        if (USE_INCREMENTAL_ESTIMATE_CALCULATION):
+            lever['estimate'] = calculateNewAverageIncrementally(lever['estimate'], reward, i + 1)
+        else:
+            lever['estimate'] = calculateNewAverageWithStepSizeParameter(lever['estimate'], reward, STEP_SIZE_PARAMETER)
 
     if (i == 0):
         averageRewards.append(reward)
