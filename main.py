@@ -1,5 +1,4 @@
 from collections.abc import Callable
-import math
 from typing import Final, TypedDict
 import matplotlib.pyplot as plt
 import numpy as np
