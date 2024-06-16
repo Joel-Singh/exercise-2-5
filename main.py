@@ -1,6 +1,5 @@
 from collections.abc import Callable
 from typing import Final, TypedDict
-import matplotlib.pyplot as plt
 import numpy as np
 import random
 
@@ -83,7 +82,7 @@ levers = [
     createLever(),
 ]
 
-averageRewards = []
+averageReward: float | None = None
 
 optimalLever = getOptimalLever(levers)
 timesOptimalLeverIsChosen = 0
@@ -110,12 +109,11 @@ for i in range(NUMBER_OF_ITERATIONS):
                 lever['estimate'] = calculateNewAverageWithStepSizeParameter(lever['estimate'], reward, STEP_SIZE_PARAMETER)
 
     def updateAverageRewards(reward):
+        global averageReward
         if (i == 0):
-            averageRewards.append(reward)
+            averageReward = reward
         else:
-            averageRewards.append(
-                calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
-            )
+            averageReward = calculateNewAverageIncrementally(averageReward, reward, i + 1)
 
     def walkLevers():
         if (ARE_LEVERS_WALKING):
@@ -161,7 +159,5 @@ print(str((timesOptimalLeverIsChosen / NUMBER_OF_ITERATIONS) * 100) + "%")
 
 print()
 
-plt.plot(averageRewards)
-plt.ylabel("Average rewards")
-plt.xlabel("Step")
-plt.show()
+print("The average award is")
+print(str(averageReward))
