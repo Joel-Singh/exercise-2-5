@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
+from numpy.lib import math
+
 DEFAULT_ESTIMATE: Final = 0
 CHANCE_TO_SELECT_RANDOMLY = 0.1
 ARE_LEVERS_WALKING = True
+
+NUMBER_OF_ITERATIONS = 6 * 10**5
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
@@ -66,7 +70,10 @@ def chooseLeverGreedily():
     highestEstimateLevers = getHighestEstimateLevers(levers)
     return random.choice(highestEstimateLevers)
 
-for i in range(999999):
+for i in range(NUMBER_OF_ITERATIONS):
+    tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10)
+    if ((i % tenPercent) == 0):
+        print(str((i / tenPercent) * 10) + "% complete")
     lever = None
     if (random.random() < CHANCE_TO_SELECT_RANDOMLY):
         lever = chooseLeverRandomly()
