@@ -87,38 +87,50 @@ def chooseLeverGreedily():
 
 timesOptimalLeverIsChosen = 0
 for i in range(NUMBER_OF_ITERATIONS):
-    tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10) - 1
-    if ((i % tenPercent) == 0):
-        print(str((i / tenPercent) * 10) + "% complete")
+    def printOutPercentage():
+        tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10) - 1
+        if ((i % tenPercent) == 0):
+            print(str((i / tenPercent) * 10) + "% complete")
 
-    lever = None
-    if (random.random() < CHANCE_TO_SELECT_RANDOMLY):
-        lever = chooseLeverRandomly()
-    else:
-        lever = chooseLeverGreedily()
+    def chooseLever():
+        if (random.random() < CHANCE_TO_SELECT_RANDOMLY):
+            return chooseLeverRandomly()
+        else:
+            return chooseLeverGreedily()
 
+    def updateEstimate(lever, reward):
+        if (lever['estimate'] is None):
+            lever['estimate'] = reward
+        else:
+            if (USE_INCREMENTAL_ESTIMATE_CALCULATION):
+                lever['estimate'] = calculateNewAverageIncrementally(lever['estimate'], reward, i + 1)
+            else:
+                lever['estimate'] = calculateNewAverageWithStepSizeParameter(lever['estimate'], reward, STEP_SIZE_PARAMETER)
+
+    def updateAverageRewards(reward):
+        if (i == 0):
+            averageRewards.append(reward)
+        else:
+            averageRewards.append(
+                calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
+            )
+
+    def walkLevers():
+        if (ARE_LEVERS_WALKING):
+            for _,lever in enumerate(levers):
+                lever["takeRandomWalk"]()
+
+    printOutPercentage()
+
+    lever = chooseLever()
     reward = lever['getReward']()
 
     if (lever is optimalLever):
         timesOptimalLeverIsChosen += 1
 
-    if (lever['estimate'] is None):
-        lever['estimate'] = reward
-    else:
-        if (USE_INCREMENTAL_ESTIMATE_CALCULATION):
-            lever['estimate'] = calculateNewAverageIncrementally(lever['estimate'], reward, i + 1)
-        else:
-            lever['estimate'] = calculateNewAverageWithStepSizeParameter(lever['estimate'], reward, STEP_SIZE_PARAMETER)
-
-    if (i == 0):
-        averageRewards.append(reward)
-    else:
-        averageRewards.append(
-            calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
-        )
-    if (ARE_LEVERS_WALKING):
-        for _,lever in enumerate(levers):
-            lever["takeRandomWalk"]()
+    updateEstimate(lever, reward)
+    updateAverageRewards(reward)
+    walkLevers()
 
 print()
 
