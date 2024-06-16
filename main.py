@@ -12,8 +12,8 @@ ARE_LEVERS_WALKING: Final = True
 
 NUMBER_OF_ITERATIONS: Final = 10000
 
-USE_INCREMENTAL_ESTIMATE_CALCULATION = True
-STEP_SIZE_PARAMETER = 0.1
+USE_INCREMENTAL_ESTIMATE_CALCULATION: Final = True
+STEP_SIZE_PARAMETER: Final = 0.1
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
