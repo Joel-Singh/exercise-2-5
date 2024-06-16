@@ -71,7 +71,7 @@ def chooseLeverGreedily():
     return random.choice(highestEstimateLevers)
 
 for i in range(NUMBER_OF_ITERATIONS):
-    tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10)
+    tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10) - 1
     if ((i % tenPercent) == 0):
         print(str((i / tenPercent) * 10) + "% complete")
     lever = None
