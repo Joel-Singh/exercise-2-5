@@ -1,9 +1,11 @@
 from collections.abc import Callable
 import math
-from typing import TypedDict
+from typing import Final, TypedDict
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+
+DEFAULT_ESTIMATE: Final = 0
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
@@ -54,7 +56,7 @@ def chooseLeverGreedily():
         highestEstimate = 0
         highestEstimateLevers = []
         for _,lever in enumerate(list):
-            estimate = lever['estimate'] if lever['estimate'] is not None else 0
+            estimate = lever['estimate'] if lever['estimate'] is not None else DEFAULT_ESTIMATE
             if (estimate > highestEstimate):
                 highestEstimateLevers = []
                 highestEstimate = estimate
