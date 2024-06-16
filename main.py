@@ -1,4 +1,6 @@
+from collections.abc import Callable
 import math
+from typing import TypedDict
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -7,22 +9,37 @@ import random
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
     return oldAverage + (1/numberOfValues) * (nextValue - oldAverage)
 
+class Lever(TypedDict):
+    estimate: None | float
+    getReward: Callable[[], float]
+    takeRandomWalk: Callable[[], None]
+    getTrueValue: Callable[[], float]
+
+def createLever() -> Lever:
+    trueValue = np.random.normal(0, 1)
+    def takeRandomWalk():
+        nonlocal trueValue
+        trueValue += np.random.normal(0, 0.01)
+    return {
+        # Really should just use 0 as the starting value rather than None
+        "estimate": None,
+        "getReward": lambda: np.random.normal(trueValue, 1),
+        "takeRandomWalk": takeRandomWalk,
+        "getTrueValue": lambda: trueValue
+    }
+
 averageRewards = []
 levers = [
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-    np.random.normal(0, 1),
-]
-
-rewardEstimates: list[None | float] = [
-    None, None, None, None, None, None, None, None, None, None
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
 ]
 
 def randomLever():
@@ -32,61 +49,60 @@ def randomLever():
         "leverIndex": lever,
         "leverReward": leverReward
     }
-
 def chooseLeverGreedily():
-    def getHighestIndices(list: list[float | None]):
-        highestNumber = 0
-        highestIndices = []
-        for i,v in enumerate(list):
-            if v is None:
-                v = 0
-            if (v > highestNumber):
-                highestIndices = []
-                highestNumber = v
-                highestIndices.append(i)
-            elif(v == highestNumber):
-                highestIndices.append(i)
-        return highestIndices
+    def getHighestEstimateLevers(list: list[Lever]) -> list[Lever]:
+        highestEstimate = 0
+        highestEstimateLevers = []
+        for _,lever in enumerate(list):
+            estimate = lever['estimate'] if lever['estimate'] is not None else 0
+            if (estimate > highestEstimate):
+                highestEstimateLevers = []
+                highestEstimate = estimate
+                highestEstimateLevers.append(lever)
+            elif(estimate == highestEstimate):
+                highestEstimateLevers.append(lever)
+        return highestEstimateLevers
 
-    highestIndices = getHighestIndices(rewardEstimates)
-    randomlyChosenIndex = highestIndices[math.floor(len(highestIndices) * random.random())]
-    leverReward = levers[randomlyChosenIndex]
-    return {
-        "leverIndex": randomlyChosenIndex,
-        "leverReward": leverReward
-    }
+    highestEstimateLevers = getHighestEstimateLevers(levers)
+    return random.choice(highestEstimateLevers)
 
-leversChosen = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 for i in range(99999):
     lever = chooseLeverGreedily()
-    leverIndex: int = lever["leverIndex"]
-    leverReward: float = lever["leverReward"]
+    reward = lever['getReward']()
 
-    leversChosen[leverIndex] += 1
-
-    if (rewardEstimates[leverIndex] is None):
-        rewardEstimates[leverIndex] = leverReward
+    if (lever['estimate'] is None):
+        lever['estimate'] = reward
     else:
-        calculateNewAverageIncrementally(rewardEstimates[leverIndex], leverReward, i + 1)
+        lever['estimate'] = calculateNewAverageIncrementally(lever['estimate'], reward, i + 1)
 
     if (i == 0):
-        averageRewards.append(leverReward)
+        averageRewards.append(reward)
     else:
         averageRewards.append(
-            calculateNewAverageIncrementally(averageRewards[i - 1], leverReward, i + 1)
+            calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
         )
-    for lever,reward in enumerate(levers):
-        levers[lever] += np.random.normal(0, 0.01)
+    for _,lever in enumerate(levers):
+        lever["takeRandomWalk"]()
+
+print()
+print("Estimates are")
+def getRewardEstimates() -> list[float]:
+    rewardEstimates = []
+    for _,lever in enumerate(levers):
+        rewardEstimates.append(lever["estimate"])
+    return rewardEstimates
+print(getRewardEstimates())
+print()
+
+print("Actual levers are")
+def getLeversTrueValues() -> list[float]:
+    trueValues = []
+    for _,lever in enumerate(levers):
+        trueValues.append(lever["getTrueValue"]())
+    return trueValues
+print(getLeversTrueValues())
 
 plt.plot(averageRewards)
 plt.ylabel("Average rewards")
 plt.xlabel("Step")
-print("Levers chosen are")
-print(leversChosen)
-print()
-print("Estimates are")
-print(rewardEstimates)
-print()
-print("Actual levers are")
-print(levers)
 plt.show()
