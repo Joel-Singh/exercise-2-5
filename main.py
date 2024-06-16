@@ -10,7 +10,7 @@ DEFAULT_ESTIMATE: Final = 0
 CHANCE_TO_SELECT_RANDOMLY = 0.1
 ARE_LEVERS_WALKING = True
 
-NUMBER_OF_ITERATIONS = 6 * 10**5
+NUMBER_OF_ITERATIONS = 10000
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
