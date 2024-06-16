@@ -42,28 +42,12 @@ def createLever() -> Lever:
         "getTrueValue": lambda: trueValue
     }
 
-averageRewards = []
-levers = [
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-    createLever(),
-]
-
 def getOptimalLever(levers: list[Lever]):
     optimalLever = levers[0]
     for lever in levers:
         if (optimalLever["getTrueValue"]() < lever["getTrueValue"]()):
             optimalLever = lever
     return optimalLever
-
-optimalLever = getOptimalLever(levers)
 
 def chooseLeverRandomly():
     return random.choice(levers)
@@ -85,7 +69,24 @@ def chooseLeverGreedily():
     highestEstimateLevers = getHighestEstimateLevers(levers)
     return random.choice(highestEstimateLevers)
 
+levers = [
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+    createLever(),
+]
+
+averageRewards = []
+
+optimalLever = getOptimalLever(levers)
 timesOptimalLeverIsChosen = 0
+
 for i in range(NUMBER_OF_ITERATIONS):
     def printOutPercentage():
         tenPercent = math.floor(NUMBER_OF_ITERATIONS / 10) - 1
