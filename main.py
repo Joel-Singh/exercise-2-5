@@ -6,6 +6,7 @@ import numpy as np
 import random
 
 DEFAULT_ESTIMATE: Final = 0
+CHANCE_TO_SELECT_RANDOMLY = 0.1
 
 # Page 31 Second Edition Barto and Sutton
 def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
@@ -44,6 +45,10 @@ levers = [
     createLever(),
 ]
 
+
+def chooseLeverRandomly():
+    return random.choice(levers)
+
 def chooseLeverGreedily():
     def getHighestEstimateLevers(list: list[Lever]) -> list[Lever]:
         highestEstimate = 0
@@ -61,8 +66,13 @@ def chooseLeverGreedily():
     highestEstimateLevers = getHighestEstimateLevers(levers)
     return random.choice(highestEstimateLevers)
 
-for i in range(99999):
-    lever = chooseLeverGreedily()
+for i in range(999999):
+    lever = None
+    if (random.random() < CHANCE_TO_SELECT_RANDOMLY):
+        lever = chooseLeverRandomly()
+    else:
+        lever = chooseLeverGreedily()
+
     reward = lever['getReward']()
 
     if (lever['estimate'] is None):
