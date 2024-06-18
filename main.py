@@ -1,4 +1,5 @@
 from DoRun import run
 
-for i in range(1):
-    print(run(False)['averageRewards'])
+singleRun = run(False)
+print(singleRun['averageRewards'])
+print(singleRun['percentageOfOptimalLeverChosen'])

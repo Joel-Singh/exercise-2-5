@@ -4,7 +4,7 @@ import numpy as np
 import random
 
 class Run(TypedDict):
-    timesOptimalLeverIsChosen: int
+    percentageOfOptimalLeverChosen: list[float]
     averageRewards: list[float]
 
 def run(useIncrementalEstimateCalculation: bool) -> Run:
@@ -84,7 +84,7 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
     averageRewards: list[float] = []
 
     optimalLever = getOptimalLever(levers)
-    timesOptimalLeverIsChosen = 0
+    percentageOfOptimalLeverChosen: list[float] = []
 
     for i in range(NUMBER_OF_ITERATIONS):
         def chooseLever():
@@ -111,6 +111,16 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
                     calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
                 )
 
+        def updatePercentageOfOptimalLeverChosen():
+            nonlocal percentageOfOptimalLeverChosen
+            leverChosenWasOptimalAsInt = 1 if lever is optimalLever else 0
+            if (i == 0):
+                percentageOfOptimalLeverChosen.append(leverChosenWasOptimalAsInt)
+            else:
+                percentageOfOptimalLeverChosen.append(
+                    calculateNewAverageIncrementally(percentageOfOptimalLeverChosen[i - 1], leverChosenWasOptimalAsInt, i + 1)
+                )
+
         def walkLevers():
             if (ARE_LEVERS_WALKING):
                 for _,lever in enumerate(levers):
@@ -119,14 +129,13 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
         lever = chooseLever()
         reward = lever['getReward']()
 
-        if (lever is optimalLever):
-            timesOptimalLeverIsChosen += 1
+        updatePercentageOfOptimalLeverChosen()
 
         updateEstimate(lever, reward)
         updateAverageRewards(reward)
         walkLevers()
 
     return {
-        "timesOptimalLeverIsChosen": timesOptimalLeverIsChosen,
+        "percentageOfOptimalLeverChosen": percentageOfOptimalLeverChosen,
         "averageRewards": averageRewards
     }
