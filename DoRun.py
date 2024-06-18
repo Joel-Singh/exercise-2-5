@@ -54,7 +54,7 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
 
     def chooseLeverGreedily():
         def getHighestEstimateLevers(list: list[Lever]) -> list[Lever]:
-            highestEstimate = 0
+            highestEstimate = -999
             highestEstimateLevers = []
             for _,lever in enumerate(list):
                 estimate = lever['estimate'] if lever['estimate'] is not None else DEFAULT_ESTIMATE
