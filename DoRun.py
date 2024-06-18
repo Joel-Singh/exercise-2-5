@@ -35,7 +35,6 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
             nonlocal trueValue
             trueValue += np.random.normal(0, 0.01)
         return {
-            # Really should just use 0 as the starting value rather than None
             "estimate": None,
             "getReward": lambda: np.random.normal(trueValue, 1),
             "takeRandomWalk": takeRandomWalk,
