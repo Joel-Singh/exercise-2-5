@@ -18,7 +18,7 @@ def getSingleListOfAverages(listContainingListsOfAverages: list[list[float]]):
     return singleListOfAverages
 
 for i in range(NUMBER_OF_RUNS):
-    singleRun = run(True)
+    singleRun = run(useIncrementalEstimateCalculation=True)
     allAverageRewards.append(singleRun['averageRewards'])
     allPercentageOfOptimalLeverChosen.append(singleRun['percentageOfOptimalLeverChosen'])
     print(str(round(((i + 1) / NUMBER_OF_RUNS) * 100, 2)) + "%")
