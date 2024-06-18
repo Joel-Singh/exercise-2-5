@@ -5,7 +5,7 @@ import random
 
 class Run(TypedDict):
     timesOptimalLeverIsChosen: int
-    averageReward: float
+    averageRewards: list[float]
 
 def run(useIncrementalEstimateCalculation: bool) -> Run:
     DEFAULT_ESTIMATE: Final = 0
@@ -81,7 +81,7 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
         createLever(),
     ]
 
-    averageReward: float = 0
+    averageRewards: list[float] = []
 
     optimalLever = getOptimalLever(levers)
     timesOptimalLeverIsChosen = 0
@@ -103,11 +103,13 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
                     lever['estimate'] = calculateNewAverageWithStepSizeParameter(lever['estimate'], reward, STEP_SIZE_PARAMETER)
 
         def updateAverageRewards(reward):
-            nonlocal averageReward
+            nonlocal averageRewards
             if (i == 0):
-                averageReward = reward
+                averageRewards.append(reward)
             else:
-                averageReward = calculateNewAverageIncrementally(averageReward, reward, i + 1)
+                averageRewards.append(
+                    calculateNewAverageIncrementally(averageRewards[i - 1], reward, i + 1)
+                )
 
         def walkLevers():
             if (ARE_LEVERS_WALKING):
@@ -126,5 +128,5 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
 
     return {
         "timesOptimalLeverIsChosen": timesOptimalLeverIsChosen,
-        "averageReward": averageReward
+        "averageRewards": averageRewards
     }
