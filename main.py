@@ -7,15 +7,15 @@ allAverageRewards: list[list[float]] = []
 allPercentageOfOptimalLeverChosen: list[list[float]] = []
 
 
-def getAveragedAveragedRewards():
-    averagedAveragedRewards: list[float] = []
-    for i in range(len(allAverageRewards[0])):
+def getSingleListOfAverages(listContainingListsOfAverages: list[list[float]]):
+    singleListOfAverages: list[float] = []
+    for i in range(len(listContainingListsOfAverages[0])):
         average = 0
-        for _,averageRewards in enumerate(allAverageRewards):
-            average += averageRewards[i]
-        average /= len(allAverageRewards)
-        averagedAveragedRewards.append(average)
-    return averagedAveragedRewards
+        for _,listOfAverages in enumerate(listContainingListsOfAverages):
+            average += listOfAverages[i]
+        average /= len(listContainingListsOfAverages)
+        singleListOfAverages.append(average)
+    return singleListOfAverages
 
 for i in range(NUMBER_OF_RUNS):
     singleRun = run(True)
@@ -23,7 +23,7 @@ for i in range(NUMBER_OF_RUNS):
     allPercentageOfOptimalLeverChosen.append(singleRun['percentageOfOptimalLeverChosen'])
     print(str(round(((i + 1) / NUMBER_OF_RUNS) * 100, 2)) + "%")
 
-plt.plot(getAveragedAveragedRewards())
+plt.plot(getSingleListOfAverages(allAverageRewards))
 plt.ylabel("Average reward over " + str(NUMBER_OF_RUNS) + " runs")
 plt.xlabel("Step")
 plt.show()
