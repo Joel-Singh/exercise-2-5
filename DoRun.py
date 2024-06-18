@@ -8,13 +8,14 @@ class Run(TypedDict):
     averageRewards: list[float]
 
 def run(useIncrementalEstimateCalculation: bool) -> Run:
-    DEFAULT_ESTIMATE: Final = 0
     CHANCE_TO_SELECT_RANDOMLY: Final = 0.1
-    ARE_LEVERS_WALKING: Final = True
+    STEP_SIZE_PARAMETER: Final = 0.1
 
     NUMBER_OF_ITERATIONS: Final = 10000
 
-    STEP_SIZE_PARAMETER: Final = 0.1
+    ARE_LEVERS_WALKING: Final = True
+
+    DEFAULT_ESTIMATE: Final = 0
 
     # Page 31 Second Edition Barto and Sutton
     def calculateNewAverageIncrementally(oldAverage, nextValue, numberOfValues):
