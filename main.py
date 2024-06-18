@@ -1,5 +1,6 @@
 from typing import Final
 from DoRun import run
+import matplotlib.pyplot as plt
 
 NUMBER_OF_RUNS: Final = 2000
 allAverageRewards: list[list[float]] = []
@@ -22,4 +23,7 @@ for i in range(NUMBER_OF_RUNS):
     allPercentageOfOptimalLeverChosen.append(singleRun['percentageOfOptimalLeverChosen'])
     print(str(round(((i + 1) / NUMBER_OF_RUNS) * 100, 2)) + "%")
 
-print(getAveragedAveragedRewards())
+plt.plot(getAveragedAveragedRewards())
+plt.ylabel("Average reward over " + str(NUMBER_OF_RUNS) + " runs")
+plt.xlabel("Step")
+plt.show()
