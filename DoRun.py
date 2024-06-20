@@ -34,7 +34,7 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
         trueValue = np.random.normal(0, 1)
         def takeRandomWalk():
             nonlocal trueValue
-            trueValue += np.random.normal(0, 0.01)
+            trueValue += random.normalvariate(0, 0.01)
         return {
             "estimate": None,
             "getReward": lambda: np.random.normal(trueValue, 1),
