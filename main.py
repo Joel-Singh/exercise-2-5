@@ -55,4 +55,6 @@ plt.ylabel("Average percentage of optimal lever chosen over " + str(NUMBER_OF_RU
 plt.xlabel("Step")
 plt.legend()
 
+plt.suptitle("Incremental vs Weighted Estimate Calculations With Random Walks")
+
 plt.show()
