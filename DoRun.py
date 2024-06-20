@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from typing import Final, TypedDict
-import numpy as np
+import time
 import random
 
 class Run(TypedDict):
@@ -31,13 +31,13 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
         getTrueValue: Callable[[], float]
 
     def createLever() -> Lever:
-        trueValue = np.random.normal(0, 1)
+        trueValue = random.normalvariate(0, 1)
         def takeRandomWalk():
             nonlocal trueValue
             trueValue += random.normalvariate(0, 0.01)
         return {
             "estimate": None,
-            "getReward": lambda: np.random.normal(trueValue, 1),
+            "getReward": lambda: random.normalvariate(trueValue, 1),
             "takeRandomWalk": takeRandomWalk,
             "getTrueValue": lambda: trueValue
         }
