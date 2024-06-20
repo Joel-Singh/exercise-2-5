@@ -1,6 +1,5 @@
 from collections.abc import Callable
 from typing import Final, TypedDict
-import time
 import random
 
 class Run(TypedDict):
