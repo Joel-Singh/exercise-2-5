@@ -7,6 +7,11 @@ class Run(TypedDict):
     percentageOfOptimalLeverChosen: list[float]
     averageRewards: list[float]
 
+updatePercentageOfOptimalLeverChosenTime = 0
+updateEstimateTime = 0
+updateAverageRewardsTime = 0
+walkLeversTime = 0
+
 def run(useIncrementalEstimateCalculation: bool) -> Run:
     CHANCE_TO_SELECT_RANDOMLY: Final = 0.1
     STEP_SIZE_PARAMETER: Final = 0.1
@@ -130,11 +135,37 @@ def run(useIncrementalEstimateCalculation: bool) -> Run:
         lever = chooseLever()
         reward = lever['getReward']()
 
-        updatePercentageOfOptimalLeverChosen()
+        global updatePercentageOfOptimalLeverChosenTime, updateEstimateTime, updateAverageRewardsTime, walkLeversTime
 
+        start_time = time.time()
+        updatePercentageOfOptimalLeverChosen()
+        end_time = time.time()
+        elapsed = end_time - start_time
+        updatePercentageOfOptimalLeverChosenTime += elapsed
+
+        start_time = time.time()
         updateEstimate(lever, reward)
+        end_time = time.time()
+        elapsed = end_time - start_time
+        updateEstimateTime += elapsed
+
+        start_time = time.time()
         updateAverageRewards(reward)
+        end_time = time.time()
+        elapsed = end_time - start_time
+        updateAverageRewardsTime += elapsed
+
+        start_time = time.time()
         walkLevers()
+        end_time = time.time()
+        elapsed = end_time - start_time
+        walkLeversTime += elapsed
+    
+
+    print("updatePercentageOfOptimalLeverChosenTime = " + str(updatePercentageOfOptimalLeverChosenTime))
+    print("updateEstimateTime = " + str(updateEstimateTime))
+    print("updateAverageRewardsTime = " + str(updateAverageRewardsTime))
+    print("walkLeversTime = " + str(walkLeversTime))
 
     return {
         "percentageOfOptimalLeverChosen": percentageOfOptimalLeverChosen,
