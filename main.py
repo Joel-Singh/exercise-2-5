@@ -32,15 +32,27 @@ for i in range(NUMBER_OF_RUNS):
     print(str(round(((i + 1 + NUMBER_OF_RUNS) / (NUMBER_OF_RUNS * 2)) * 100, 2)) + "%")
 
 plt.subplot(121)
-plt.plot(getSingleListOfAverages(allAverageRewardsIncremental), 'r')
-plt.plot(getSingleListOfAverages(allAverageRewardsWeighted), 'b')
+
+line, = plt.plot(getSingleListOfAverages(allAverageRewardsIncremental), 'r')
+line.set_label('Incremental')
+
+line, = plt.plot(getSingleListOfAverages(allAverageRewardsWeighted), 'b')
+line.set_label('Weighted')
+
 plt.ylabel("Average reward over " + str(NUMBER_OF_RUNS) + " runs")
 plt.xlabel("Step")
+plt.legend()
 
 plt.subplot(122)
-plt.plot(getSingleListOfAverages(allPercentageOfOptimalLeverChosenIncremental), 'r')
-plt.plot(getSingleListOfAverages(allPercentageOfOptimalLeverChosenWeighted), 'b')
+
+line, = plt.plot(getSingleListOfAverages(allPercentageOfOptimalLeverChosenIncremental), 'r')
+line.set_label("Incremental")
+
+line, = plt.plot(getSingleListOfAverages(allPercentageOfOptimalLeverChosenWeighted), 'b')
+line.set_label('Weighted')
+
 plt.ylabel("Average percentage of optimal lever chosen over " + str(NUMBER_OF_RUNS) + " runs")
 plt.xlabel("Step")
+plt.legend()
 
 plt.show()
