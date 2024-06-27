@@ -8,6 +8,6 @@ Here is the graph you get:
 ```bash
 $ git clone https://github.com/Joel-Singh/exercise-2-5.git
 $ pip install -r requirements.txt
-$ ython main.py
+$ python main.py
 ```
 If you would like to run the benchmarking instead, simply run *benchmarking.py* instead of *main.py*
